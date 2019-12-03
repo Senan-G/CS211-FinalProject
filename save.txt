@@ -1,0 +1,51 @@
+false
+false
+false
+100
+1575352234607
+1575352234607
+0
+spend some money
+Black friday shopping
+1
+4
+80
+1575351726305
+1575438126305
+0
+do a group project meant to be completed in a semester in 3 days by yourself. Good Luck :)
+Finish final project
+5
+10
+50
+1575351901669
+1575524701669
+0
+get that pup some fresh air
+Walk dog
+0
+1
+22
+1575351857898
+1576561457898
+0
+get that study time in
+Study for finals
+2
+8
+12
+1575351796330
+1578807796330
+0
+send some resumes out
+Job applications
+2
+4
+0
+1575352093466
+1577512093466
+0
+the whole extended family wants $2000 computers and a new puppy
+Get christmas presents
+0
+5
