@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 public class UiController implements Initializable{//Controller for view.fxml
 	
 	protected TaskCollector taskCollector;//defines task collectors for keeping track of tasks
-	protected TaskCollector completedCollector;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -44,9 +43,10 @@ public class UiController implements Initializable{//Controller for view.fxml
 		*/
 		
 		taskCollector = FileParser.readFile();//reads in save file and updates ui
-		completedCollector = new TaskCollector();
+		showUrgency.setSelected(taskCollector.isShowUrgency());//update saved settings
+		allowDeletion.setSelected(taskCollector.isAllowDeletion());
 		updateList();
-		
+		updateCompletedList();
 	}
 	
 	public void updateList(){
@@ -66,7 +66,7 @@ public class UiController implements Initializable{//Controller for view.fxml
 	
 	public void updateCompletedList(){//updates completed tasks ui
 		completedList.getItems().clear();
-		for(Task task : completedCollector.getTasks())
+		for(Task task : taskCollector.getCompleted())
 			completedList.getItems().add(task.getName());
 	}
 	
@@ -126,6 +126,7 @@ public class UiController implements Initializable{//Controller for view.fxml
         	NewTaskController newTaskController = fxmlLoader.getController();
     		newTaskController.passInfo(this);
         	Stage stage = new Stage();
+        	stage.setTitle("Create New Task");
         	stage.setScene(new Scene(root1));
         	stage.show();
     	}
@@ -166,11 +167,11 @@ public class UiController implements Initializable{//Controller for view.fxml
         	SortByController sortByController = fxmlLoader.getController();
         	sortByController.passInfo(this);
         	Stage stage = new Stage();
+        	stage.setTitle("Sort Options");
         	stage.setScene(new Scene(root1));
         	stage.show();
     	}
     	catch(Exception e){
-    		System.out.println("no");
     		e.printStackTrace();
     	}
     }
@@ -183,11 +184,11 @@ public class UiController implements Initializable{//Controller for view.fxml
         	TaskInfoController taskInfoController = fxmlLoader.getController();
         	taskInfoController.passInfo(this);
         	Stage stage = new Stage();
+        	stage.setTitle("Task Info");
         	stage.setScene(new Scene(root1));
         	stage.show();
     	}
     	catch(Exception e){
-    		System.out.println("yeet");
     		e.printStackTrace();
     	}
     }

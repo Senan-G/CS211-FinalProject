@@ -1,14 +1,6 @@
 false
 false
-false
-100
-1575352234607
-1575352234607
-0
-spend some money
-Black friday shopping
-1
-4
+true
 80
 1575351726305
 1575438126305
@@ -49,3 +41,20 @@ the whole extended family wants $2000 computers and a new puppy
 Get christmas presents
 0
 5
+44
+1576248817555
+1576853617555
+0
+finish up those classes
+Take Finals
+4
+2
+Completed:
+100
+1575352234607
+1575352234607
+0
+spend some money
+Black friday shopping
+1
+4

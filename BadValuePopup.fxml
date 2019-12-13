@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="136.0" prefWidth="282.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="application.BadValueController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="142.0" prefWidth="282.0" VBox.vgrow="ALWAYS">
+      <children>
+        <Label alignment="CENTER" layoutX="27.0" layoutY="26.0" style="&#10;" text="Due date value not accepted" textAlignment="CENTER" wrapText="false">
+          <font>
+            <Font size="18.0" />
+          </font>
+        </Label>
+            <Label alignment="CENTER" layoutX="96.0" layoutY="59.0" style="&#10;" text="Please try again" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Button fx:id="closeButton" layoutX="114.0" layoutY="97.0" mnemonicParsing="false" onAction="#handleCloseClick" prefHeight="25.0" prefWidth="55.0" text="Close" />
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>

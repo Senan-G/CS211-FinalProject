@@ -15,6 +15,7 @@ public class FileParser {
 		boolean colorCoding = false;
 		boolean allowDeletion = false;
 		ArrayList<Task> tasks = new ArrayList<Task>();
+		ArrayList<Task> completed = new ArrayList<Task>();
 		
 		File file = new File("/Users/senan/OneDrive/Desktop/CS211/Projects/Final/src/application/save.txt");//creates new file object from save.txt
 		Scanner scnr = null;
@@ -34,14 +35,8 @@ public class FileParser {
 		allowDeletion = scnr.nextBoolean();
 		
 		//iterates through remaining data which will be parsed and saved into an array of tasks
-		while(scnr.hasNextLine()){
-			int urgencyRating;
-			try{//makes sure next line is correct value
-				urgencyRating = scnr.nextInt();
-			}
-			catch(Exception e){
-				break;
-			}
+		while(scnr.hasNextInt()){
+			int urgencyRating = scnr.nextInt();
 			Date dateCreated = new Date(scnr.nextLong());
 			Date dateDue = new Date(scnr.nextLong());
 			Date dateCompleted = new Date(scnr.nextLong());
@@ -54,9 +49,28 @@ public class FileParser {
 			Task task = new Task(urgencyRating, dateCreated, dateDue, dateCompleted, description, name, difficultyRating, timeToComplete);//creates new task based on parsed data and saves into array
 			tasks.add(task);
 		}
+		System.out.println("hi");
+		scnr.nextLine();
+		if(scnr.nextLine().equals("Completed:")){
+			System.out.println("hi");
+			while(scnr.hasNextInt()){
+				int urgencyRating = scnr.nextInt();
+				Date dateCreated = new Date(scnr.nextLong());
+				Date dateDue = new Date(scnr.nextLong());
+				Date dateCompleted = new Date(scnr.nextLong());
+				scnr.nextLine();//completes line so so next will be actual data
+				String description = scnr.nextLine();
+				String name = scnr.nextLine();
+				int difficultyRating = scnr.nextInt();
+				int timeToComplete = scnr.nextInt();
+				
+				Task task = new Task(urgencyRating, dateCreated, dateDue, dateCompleted, description, name, difficultyRating, timeToComplete);//creates new task based on parsed data and saves into array
+				completed.add(task);
+			}
+		}
 			
 		//returns taskcollector based on collected save data
-		return new TaskCollector(tasks, showUrgencyValue, colorCoding, allowDeletion);
+		return new TaskCollector(tasks, completed, showUrgencyValue, colorCoding, allowDeletion);
 	}
 	
 	public static boolean writeFile(TaskCollector taskCollector){
@@ -81,6 +95,21 @@ public class FileParser {
 				fileWriter.write(task.getDifficultyRating() + "\r\n");
 				fileWriter.write(task.getTimeToComplete() + "\r\n");
 			}
+			
+			if(taskCollector.getCompleted().size() > 0)
+				fileWriter.write("Completed:\r\n");
+			
+			for(Task task : taskCollector.getCompleted()){
+				fileWriter.write(task.getUrgencyRating() + "\r\n");
+				fileWriter.write(task.getDateCreated().getTime() + "\r\n");
+				fileWriter.write(task.getDateDue().getTime() + "\r\n");
+				fileWriter.write(task.getDateCompleted().getTime() + "\r\n");
+				fileWriter.write(task.getDescription() + "\r\n");
+				fileWriter.write(task.getName() + "\r\n");
+				fileWriter.write(task.getDifficultyRating() + "\r\n");
+				fileWriter.write(task.getTimeToComplete() + "\r\n");
+			}
+			
 			fileWriter.close();
 		}
 		catch(Exception e){

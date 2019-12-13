@@ -5,41 +5,59 @@ import java.util.ArrayList;
 public class TaskCollector {
 	
 	private ArrayList<Task> tasks;
+	private ArrayList<Task> completed;
 	private boolean showUrgency;
 	private boolean colorCoding;
 	private boolean allowDeletion;
 	
 	public TaskCollector(){
-		this(new ArrayList<Task>(), false, false, false);
+		this(new ArrayList<Task>(), new ArrayList<Task>(), false, false, false);
 	}
 	
-	public TaskCollector(ArrayList<Task> tasks){
-		this(tasks, false, false, false);
+	public TaskCollector(ArrayList<Task> tasks, ArrayList<Task> completed){
+		this(tasks, completed, false, false, false);
 	}
 	
-	public TaskCollector(ArrayList<Task> tasks, boolean showUrgency, boolean colorCoding, boolean allowDeletion){//initializes all settings and task list
+	public TaskCollector(ArrayList<Task> tasks, ArrayList<Task> completed, boolean showUrgency, boolean colorCoding, boolean allowDeletion){//initializes all settings and task list
 		this.tasks = tasks;
+		this.completed = completed;
 		this.setShowUrgency(showUrgency);
 		this.setColorCoding(colorCoding);
 		this.setAllowDeletion(allowDeletion);
 	}
 	
 	public void sortByUrgency(){//kicks off merge sort based on urgency rating
-		divideUrgency(0, tasks.size()-1);
+		divide(0, tasks.size()-1, "urgency");
 	}
 	
-	public void divideUrgency(int startIndex,int endIndex){//divides array recursively
+	public void sortByDateDue(){//kicks off merge sort based on date due
+		divide(0, tasks.size()-1, "dueDate");
+	}
+	
+	public void sortByDateAdded(){//kicks off merge sort based on date added
+		divide(0, tasks.size()-1, "dateAdded");
+	}
+	
+	public void sortByDifficulty(){//kicks off merge sort based on difficulty rating
+		divide(0, tasks.size()-1, "difficulty");
+	}
+	
+	public void sortByTimeToComplete(){//kicks off merge sort based on estimated time to complete
+		divide(0, tasks.size()-1, "TimeToComplete");
+	}
+	
+	public void divide(int startIndex,int endIndex, String keyword){//divides array recursively
         
         if(startIndex<endIndex && (endIndex-startIndex)>=1){
             int mid = (endIndex + startIndex)/2;
-            divideUrgency(startIndex, mid);
-            divideUrgency(mid+1, endIndex);        
+            divide(startIndex, mid, keyword);
+            divide(mid+1, endIndex, keyword);        
             
-            mergeUrgency(startIndex,mid,endIndex);            
+            merge(startIndex,mid,endIndex, keyword);     
         }       
     }
 	
-	public void mergeUrgency(int startI, int midI, int endI){//sorts and merges divided array back together based on urgency
+	public void merge(int startI, int midI, int endI, String keyword){//sorts and merges divided array back together based on keyword comparison
         
         ArrayList<Task> tempArray = new ArrayList<Task>();
         
@@ -47,7 +65,7 @@ public class TaskCollector {
         int rightIndex = midI+1;
         
         while(leftIndex <= midI && rightIndex <= endI){
-            if(tasks.get(leftIndex).getUrgencyRating() >= tasks.get(rightIndex).getUrgencyRating())
+            if(compare(keyword, tasks.get(leftIndex), tasks.get(rightIndex)))
             	tempArray.add(tasks.get(leftIndex++));
             else
             	tempArray.add(tasks.get(rightIndex++));
@@ -69,9 +87,28 @@ public class TaskCollector {
         
     }
 	
-	public void sortByDateDue(){//kicks off merge sort based on date due
-		divideDateDue(0, tasks.size()-1);
+	private boolean compare(String keyword, Task leftTask, Task rightTask){
+		
+		if(keyword.equals("urgency")){
+			return leftTask.getUrgencyRating() >= rightTask.getUrgencyRating();
+		}
+		else if(keyword.equals("dueDate")){
+			return leftTask.getDateDue().before(rightTask.getDateDue()) || leftTask.getDateDue().equals(rightTask.getDateDue());
+		}
+		else if(keyword.equals("dateAdded")){
+			return leftTask.getDateCreated().before(rightTask.getDateCreated()) || leftTask.getDateCreated().equals(rightTask.getDateCreated());
+		}
+		else if(keyword.equals("difficulty")){
+			return leftTask.getDifficultyRating() <= rightTask.getDifficultyRating();
+		}
+		else if(keyword.equals("TimeToComplete")){
+			return leftTask.getTimeToComplete() <= rightTask.getTimeToComplete();
+		}
+		
+		return false;
 	}
+	
+	/*
 	
 	public void divideDateDue(int startIndex,int endIndex){//divides array recursively
         
@@ -114,9 +151,7 @@ public class TaskCollector {
         
     }
 	
-	public void sortByDateAdded(){//kicks off merge sort based on date added
-		divideDateAdded(0, tasks.size()-1);
-	}
+	
 	
 	public void divideDateAdded(int startIndex,int endIndex){//divides array recursively
         
@@ -159,9 +194,7 @@ public class TaskCollector {
         
     }
 	
-	public void sortByDifficulty(){//kicks off merge sort based on difficulty rating
-		divideDifficulty(0, tasks.size()-1);
-	}
+	
 	
 	public void divideDifficulty(int startIndex,int endIndex){//divides array recursively
         
@@ -204,9 +237,7 @@ public class TaskCollector {
         
     }
 	
-	public void sortByTimeToComplete(){//kicks off merge sort based on estimated time to complete
-		divideTimeToComplete(0, tasks.size()-1);
-	}
+	
 	
 	public void divideTimeToComplete(int startIndex,int endIndex){//divides array recursively
         
@@ -248,6 +279,8 @@ public class TaskCollector {
         
         
     }
+	*/
+	
 	
 	//getters and setters
 	public ArrayList<Task> getTasks() {
@@ -280,6 +313,14 @@ public class TaskCollector {
 
 	public void setAllowDeletion(boolean allowDeletion) {
 		this.allowDeletion = allowDeletion;
+	}
+
+	public ArrayList<Task> getCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(ArrayList<Task> completed) {
+		this.completed = completed;
 	}
 	
 	

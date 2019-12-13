@@ -22,8 +22,14 @@ public class TaskInfoController {
 		//sets all labels text to found task info
 		nameLabel.setText(task.getName());
 		descLabel.setText(task.getDescription());
-		daysLabel.setText("" + ((task.getDateDue().getTime() - new Date().getTime()) / 86400000));
 		urgencyLabel.setText("" + task.getUrgencyRating());
+		
+		int dueDate = (int) ((task.getDateDue().getTime() - new Date().getTime()) / 86400000);
+		
+		if(dueDate >= 0)
+			daysLabel.setText("" + dueDate);
+		else
+			daysLabel.setText("Overdue " + Math.abs(dueDate) + " days");
 		
 		if(!main.taskCollector.isAllowDeletion())//disables button if setting applicable
 			removeButton.setDisable(true);
@@ -61,10 +67,11 @@ public class TaskInfoController {
     @FXML
     void handleCompleteClick() {//moves selected task from incomplete to complete
     	if(main.taskCollector.getTasks().remove(task))
-    		main.completedCollector.getTasks().add(task);
+    		main.taskCollector.getCompleted().add(task);
     	
-    	main.updateCompletedList();//updates lists
+    	main.updateCompletedList();//updates list, updates ui and saves to file
     	main.updateList();
+    	FileParser.writeFile(main.taskCollector);
     	
     	handleCancelClick();//closes ui
     }
@@ -72,6 +79,7 @@ public class TaskInfoController {
     @FXML
     void handleRemoveClick() {//removes task from list without moving it to completed
     	main.taskCollector.getTasks().remove(task);
+    	FileParser.writeFile(main.taskCollector);
     	main.updateList();
     	
     	handleCancelClick();//closes ui
